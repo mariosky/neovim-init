@@ -1,7 +1,13 @@
+let g:ale_disable_lsp = 1
+
 call plug#begin('~/AppData/Local/nvim/plugged')
 " below are some vim plugins for demonstration purpose.
 " add the plugin you want to use here.
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
+Plug 'ckunte/latex-snippets-vim', { 'tag': '*' }
+Plug 'jiangmiao/auto-pairs'
 Plug 'kyazdani42/nvim-tree.lua'
 "Plug 'joshdick/onedark.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -12,20 +18,33 @@ Plug 'gregsexton/matchtag'
 Plug 'morhetz/gruvbox'
 Plug 'dense-analysis/ale'
 Plug 'OmniSharp/omnisharp-vim'
+Plug 'rakr/vim-one'
+Plug 'arcticicestudio/nord-vim'
 "Plug 'jeetsukumaran/vim-buffergator'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kassio/neoterm'
+Plug 'lervag/vimtex'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'tpope/vim-surround'
 call plug#end()
 
-
-
 let mapleader = " " " map leader to Space
+" copy and paste
+set mouse=a
+vmap <C-c> "+yi
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <ESC>"+pa
+
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 nnoremap <leader>5 <cmd> !dotnet run <cr>
 set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
+set noswapfile
+set nobackup
 set smartindent
 set relativenumber
 set nohlsearch 
@@ -36,8 +55,26 @@ set number
 set scrolloff=8
 set colorcolumn=80
 set signcolumn=yes
-colorscheme gruvbox
-highlight Normal guibg=none
+
+let g:gruvbox_guisp_fallback = "bg"
+colorscheme nord
+"highlight Normal guibg=none
+
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+
+" Spelling mistakes will also be colored red if you uncomment the colors.
+hi SpellBad cterm=underline "ctermfg=203 guifg=#ff5f5f
+hi SpellLocal cterm=underline "ctermfg=203 guifg=#ff5f5f
+hi SpellRare cterm=underline "ctermfg=203 guifg=#ff5f5f
+hi SpellCap cterm=underline "ctermfg=203 guifg=#ff5f5f
+
+" settings for sumatraPDF
+let g:vimtex_view_general_viewer = 'SumatraPDF'
+let g:vimtex_view_general_options
+    \ = '-reuse-instance -forward-search @tex @line @pdf'
+let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 
 "Telescope Mappings 
 " Find files using Telescope command-line sugar.
@@ -234,7 +271,7 @@ nmap <silent> <C-L> <C-L>:nohlsearch<CR>:match<CR>:diffupdate<CR>
 set nobackup
 set nowritebackup
 " Give more space for displaying messages.
-set cmdheight=2
+"set cmdheight=2
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -253,10 +290,8 @@ else
 endif
 
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+"inoremap <silent><expr> <Tab> \ pumvisible() ? "\<C-n>" : \ <SID>check_back_space() ? "\<Tab>" : \ coc#refresh()
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
